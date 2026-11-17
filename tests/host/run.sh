@@ -15,7 +15,10 @@ CC=${HOSTCC:-cc}
 T=$(mktemp -d)
 trap 'rm -rf "$T"' EXIT HUP INT TERM
 mkdir -p "$T/a4" "$T/run/User"
-for f in "$A4"/src/a4_*.c "$A4"/tests/fake_acgame.c; do
+# the core as gfopenallegro's own tests/run_tests.sh builds it: src/ less
+# the Amiga-only a4_dumb_gm.c, with its fakes (acgame, gfopenmusic)
+for f in "$A4"/src/a4_*.c "$A4"/tests/fake_*.c; do
+    case "$f" in *a4_dumb_gm.c) continue ;; esac
     "$CC" -std=gnu99 -D_DEFAULT_SOURCE -w -I"$A4/include" -I"$A4/src" -I"$A4/tests" -c "$f" -o "$T/a4/$(basename "$f").o"
 done
 DAT="$ROOT/release/msdos_or_dosbox/kronobz.dat"
