@@ -1,0 +1,19 @@
+Krono's Battle Zone: licences
+=============================
+
+The game: Krono's Battle Zone 1.00, (c) 2001-2026 Alvaro "Krono" Gonzalez
+Ferrer (Kronoman), from github.com/alvarogonzalezferrer/krono_battle_zone
+(the author's own repository) at commit
+33f71949a15e231b8ee1c811972540aa1bc3dbf3.
+
+- The game, its code and data (kronobz.dat): MIT licence (LICENSE.txt).
+  The port's changes to the code are under it too; the source of this
+  build is in DalsinAI/amigakronobattlezone on GitHub.
+- Libs/allegro4.library (DalsinAI/gfopenallegro) and Libs/acgame.library
+  (DalsinAI/acgame): MIT, Copyright (c) 2026 AmiCradle Team. They are our
+  own Allegro 4 and game libraries, not Allegro's code.
+- The Amiga port's own files (amiga/, AMIGA_PORT.md, package/, tools/,
+  tests/) are MIT like the game, Copyright (c) 2026 AmiCradle Team. The
+  GlowIcons are drawn from the game's own tank sprite (kronobz.dat).
+
+Designed, tested and delivered by The AmiCradle Team.

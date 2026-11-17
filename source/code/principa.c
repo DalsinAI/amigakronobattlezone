@@ -116,7 +116,12 @@ int i1; //dummy para los for
 
    // crea el nombre de archivo de configuracion a leer
    // con el path del ejecutable actual
+#ifdef __amigaos__
+   // GFOS: the settings go in the game drawer's User drawer
+   ustrzcpy(cfg_arch, sizeof(cfg_arch), "User/krbz.cfg");
+#else
    replace_filename(cfg_arch, argv[0], "krbz.cfg", sizeof(cfg_arch));
+#endif
 
    cprintf("Archivo de configuracion: \n\r ");
    cprintf(" %s \n\r", cfg_arch);
@@ -360,7 +365,12 @@ cprintf("\n\r Archivo EXE en uso: \n\r ");
 cprintf(">> %s \n\r", argv[0]  );
 
 // crea el nombre de archivo
+#ifdef __amigaos__
+// GFOS: kronobz.dat is in the game drawer, the current directory
+ustrzcpy(buf_arch, sizeof(buf_arch), "kronobz.dat");
+#else
 replace_filename(buf_arch, argv[0], "kronobz.dat", sizeof(buf_arch));
+#endif
 
 cprintf("\n\r Archivo DAT a utilizar (KRONOBZ.DAT) \n\r ");
 cprintf(">> %s \n\r", buf_arch);

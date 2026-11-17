@@ -1,0 +1,24 @@
+Krono's Battle Zone: controls
+=============================
+
+From the author's read-me (ReadMe-KronoBattleZone). The menus are in
+Spanish: JUGAR = play, OPCIONES = options, SALIR = quit.
+
+Player 1 (top half, or the whole screen against the computer)
+  Move          cursor keys, or keypad 8 4 6 2 (5 also)
+  Shoot         Insert, keypad 0 or keypad Enter
+  Lights        Del or keypad 3 (at night)
+  Turn turret   Home, Page Up, or keypad 7 and 9
+
+Player 2 (bottom half)
+  Move          W S A D
+  Shoot         R
+  Lights        F (at night)
+  Turn turret   Q and E
+
+  Esc           end the game (or the demo)
+  Pause         pause; Return carries on
+
+Amiga keyboards have no Insert/Home/Page Up keys: use the keypad.
+The settings (screen size, computer skill, details) are kept in the
+drawer's User drawer, User/krbz.cfg.

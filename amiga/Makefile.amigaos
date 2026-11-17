@@ -1,0 +1,58 @@
+# Krono's Battle Zone for GFOS: 68040, libnix, soft float, Allegro 4 from
+# gfopenallegro (allegro4.library on acgame.library, 8-bit), both in the
+# drawer's Libs/ (package/build-amiga.sh builds them at the commits it pins).
+#   make -f amiga/Makefile.amigaos PREFIX=<stove>/prefix A4=<gfopenallegro/allegro4> A4OUT=<its build> ACGOUT=<acgame build>
+# Copyright (c) 2026 AmiCradle Team. MIT, as Krono's Battle Zone.
+PREFIX ?= $(HOME)/AmiCradle/kitchen/stoves/os32-gcc16-open6/prefix
+A4 ?= ../gfopenallegro/allegro4
+A4OUT ?= $(A4)/build-amiga
+ACGOUT ?= ../acgame/build-amiga
+CC = $(PREFIX)/bin/m68k-amigaos-gcc
+STRIP = $(PREFIX)/bin/m68k-amigaos-strip
+NAME = KronoBattleZone
+BUILD ?= build/amigaos
+DIR = $(BUILD)/$(NAME)
+
+# upstream builds one unit, principa.c (incluir.h pulls in the rest), as
+# source/code/make.bat does; amiga/compat stands in for DJGPP's conio.h/dos.h
+SRCS = source/code/principa.c amiga/amiga_start.c
+OBJS = $(patsubst %.c,$(BUILD)/obj/%.o,$(SRCS))
+
+SOFT = -specs=$(A4)/specs/m68k-soft-m68040.specs
+CFLAGS = -noixemul -m68040 $(SOFT) -std=gnu17 -O2 -fomit-frame-pointer \
+	-Wall -Wno-unused -Wno-pointer-sign -Wno-parentheses \
+	-Iamiga/compat -I$(A4)/include
+LIBS = $(A4OUT)/liballeg.a -lm
+
+all: $(DIR)/$(NAME) package
+
+$(BUILD)/$(NAME).debug: $(OBJS)
+	$(CC) -noixemul -m68040 $(SOFT) -o $@ $(OBJS) $(LIBS)
+
+$(DIR)/$(NAME): $(BUILD)/$(NAME).debug
+	@mkdir -p $(DIR)
+	$(STRIP) -o $@ $<
+
+$(BUILD)/obj/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# The drawer: the game, the author's kronobz.dat as it is, Libs/ with
+# allegro4.library and acgame.library, the read-mes and the icons.
+package: $(DIR)/$(NAME)
+	mkdir -p $(DIR)/Libs $(DIR)/User
+	cp release/msdos_or_dosbox/kronobz.dat $(DIR)/
+	cp $(A4OUT)/allegro4.library $(ACGOUT)/acgame.library $(DIR)/Libs/
+	cp AMIGA_PORT.md $(DIR)/ReadMe
+	cp release/msdos_or_dosbox/README.txt $(DIR)/ReadMe-KronoBattleZone
+	cp LICENSE $(DIR)/LICENSE.txt
+	cp amiga/Controls amiga/Licences.txt $(DIR)/
+	cp amiga/icons/$(NAME).info amiga/icons/ReadMe.info $(DIR)/
+	for f in ReadMe-KronoBattleZone LICENSE.txt Controls Licences.txt; do cp amiga/icons/ReadMe.info $(DIR)/$$f.info; done
+	cp amiga/icons/Data.info $(DIR)/User.info
+	cp amiga/icons/$(NAME)-drawer.info $(BUILD)/$(NAME).info
+	cp amiga/Install-$(NAME) amiga/Install-$(NAME).info $(BUILD)/
+
+clean:
+	rm -rf $(BUILD)
+.PHONY: all package clean
